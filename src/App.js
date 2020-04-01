@@ -35,12 +35,15 @@ class App extends Component {
     });
   };
 
-  deleteBookmark = bookmarkId => {
-    const newBookmarks = this.state.bookmarks.filter(bm =>
-      bm.id !== bookmarkId
-    )
+  updateBookmark = (bookmarkId, newData) => {
+    let bookmarkToUpdate = this.state.bookmarks.filter(bm => bm.id === bookmarkId)
+    const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== bookmarkId)
+    bookmarkToUpdate = {
+      ...bookmarkToUpdate,
+      ...newData
+    }
     this.setState({
-      bookmarks: newBookmarks
+      bookmarks: [...unchangedBookmarks, bookmarkToUpdate]
     })
   }
 
@@ -70,21 +73,26 @@ class App extends Component {
       bookmarks: this.state.bookmarks,
       addBookmark: this.addBookmark,
       deleteBookmark: this.deleteBookmark,
+      updateBookmark: this.updateBookmark,
     }
     return (
       <main className="App">
         <h1>Bookmarks!</h1>
         <BookmarksContext.Provider value={contextValue}>
           <Nav />
-          <div className='content' aria-live='polite'>
+          <div className='content' aria-live='polite'> 
+            <Route
+              exact
+              path='/'
+              component={BookmarkList}
+            />
             <Route
               path='/add-bookmark'
               component={AddBookmark}
             />
             <Route
-              exact
-              path='/'
-              component={BookmarkList}
+              path='/edit/:bookmarkId'
+              component={EditBookmark}
             />
           </div>
         </BookmarksContext.Provider>

@@ -4,6 +4,6 @@ import Rating from './Rating';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Rating />, div);
+  ReactDOM.render(<Rating value={1} />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
