@@ -4,7 +4,7 @@ import "./BookmarkItem.css";
 import config from "../config";
 import BookmarksContext from "../BookmarksContext";
 import PropTypes from 'prop-types'
-
+import { Link } from 'react-router-dom'
 function deleteBookmarkRequest(bookmarkId, cb) {
   fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
     method: 'DELETE',
@@ -49,6 +49,16 @@ export default function BookmarkItem(props) {
           <div className='BookmarkItem__buttons'>
             <button
               className='BookmarkItem__description'
+              // onClick={() => {
+              //   props.history.push(`/edit/${props.id}`)
+              // }}
+            >
+              <Link to={`/edit/${props.id}`}>
+                Edit
+              </Link>
+            </button>
+            <button
+              className='BookmarkItem__description'
               onClick={() => {
                 deleteBookmarkRequest(
                   props.id,
@@ -57,7 +67,7 @@ export default function BookmarkItem(props) {
               }}
             >
               Delete
-            </button>
+            </button>            
           </div>
         </li>
       )}
