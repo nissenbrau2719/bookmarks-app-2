@@ -36,12 +36,12 @@ class App extends Component {
     });
   };
 
-  updateBookmark = (bookmarkId, newData) => {
-    let bookmarkToUpdate = this.state.bookmarks.filter(bm => bm.id === bookmarkId)
-    const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== bookmarkId)
+  updateBookmark = (updatedBookmarkData) => {
+    let bookmarkToUpdate = this.state.bookmarks.filter(bm => bm.id === updatedBookmarkData.id)
+    const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== updatedBookmarkData.id)
     bookmarkToUpdate = {
       ...bookmarkToUpdate,
-      ...newData
+      ...updatedBookmarkData
     }
     this.setState({
       bookmarks: [...unchangedBookmarks, bookmarkToUpdate]

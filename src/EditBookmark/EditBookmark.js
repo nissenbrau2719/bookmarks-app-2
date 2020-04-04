@@ -32,6 +32,49 @@ class EditBookmark extends React.Component {
     })
   }
 
+  handleSubmit = e => {
+    e.preventDefault() 
+
+    const { title, url, description, rating } = this.state
+    const updatedBookmark = { title, url, description, rating }
+    const requiredFields = ['title', 'url']
+    const bookmarkId = this.props.match.params.bookmarkId
+    const options = {
+      method: 'PATCH',
+      body: JSON.stringify(updatedBookmark),
+      headers: {
+        'content-type': 'application/json',
+        'authorization': `bearer ${config.API_KEY}`
+      }
+    }
+
+    for(const field of requiredFields) {
+      if(!field) {
+        this.setState({
+          error: {
+            message: `The ${field} field is required`
+          }
+        })
+      }
+    }
+
+    fetch(config.API_ENDPOINT + `/${bookmarkId}`, options)
+      .then(res => {
+        if(!res.ok) {
+          return res.json().then(error => Promise.reject(error))
+        }
+        return res.json()
+      })
+      .then((data) => {
+        this.context.updateBookmark(data)
+        this.props.history.push('/')
+      })
+      .catch(error => {
+        console.error(error)
+        this.setState({ error })
+      })
+  }
+
   componentDidMount() {
     const bookmarkId = this.props.match.params.bookmarkId
     const options = {
@@ -81,6 +124,7 @@ class EditBookmark extends React.Component {
               id='title'
               value={title}
               onChange={this.handleChange}
+              required
             />    
           </div>
           <div>
@@ -93,6 +137,7 @@ class EditBookmark extends React.Component {
               id='url'
               value={url} 
               onChange={this.handleChange}
+              required
             />
           </div>
           <div>
