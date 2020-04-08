@@ -14,7 +14,7 @@ class EditBookmark extends React.Component {
   }
 
   state = {
-    id: this.props.match.params.bookmarkId,
+    id: '',
     title: '',
     url: '',
     description: '',
@@ -100,8 +100,8 @@ class EditBookmark extends React.Component {
         return res.json()
       })
       .then(data => {
-        const { title, url, description, rating } = data
-        this.setState({ title, url, description, rating })
+        const { title, url, description, rating, id } = data
+        this.setState({ title, url, description, rating, id })
       })
       .catch(error => {
         this.setState({ error })

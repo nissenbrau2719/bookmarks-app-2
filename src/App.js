@@ -36,12 +36,19 @@ class App extends Component {
     });
   };
 
-  updateBookmark = (updatedBookmark) => {
-    const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== updatedBookmark.id)
+  updateBookmark = updatedBookmark => {
+    console.log('Old bookmarks', this.state.bookmarks)
+    let bookmarksClone = this.state.bookmarks
+    let updatedBookmarks = bookmarksClone.map(bm =>
+         (bm.id !== updatedBookmark.id) ? bm : updatedBookmark
+       )
+    console.log('check this', updatedBookmarks );
     this.setState({
-      bookmarks: [...unchangedBookmarks, updatedBookmark]
-    })
-  }
+       bookmarks: updatedBookmarks 
+     }, () => {
+         console.log('Updated bookmarks', this.state.bookmarks)
+     })
+   }
 
   // updateBookmark = updatedBookmark => {
   //   this.setState({
