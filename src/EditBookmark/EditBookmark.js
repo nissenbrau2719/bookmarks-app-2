@@ -14,6 +14,7 @@ class EditBookmark extends React.Component {
   }
 
   state = {
+    id: this.props.match.params.bookmarkId,
     title: '',
     url: '',
     description: '',
@@ -35,9 +36,14 @@ class EditBookmark extends React.Component {
   handleSubmit = e => {
     e.preventDefault() 
 
-    const { title, url, description, rating } = this.state
-    const updatedBookmark = { title, url, description, rating }
-    const requiredFields = ['title', 'url']
+    const { title, url, description, rating, id } = this.state
+    const updatedBookmark = { 
+      id: id,
+      title: title,
+      url: url,
+      description: description,
+      rating: rating }
+    const requiredFields = [title, url]
     const bookmarkId = this.props.match.params.bookmarkId
     const options = {
       method: 'PATCH',
@@ -47,6 +53,8 @@ class EditBookmark extends React.Component {
         'authorization': `bearer ${config.API_KEY}`
       }
     }
+
+    console.log(JSON.stringify(updatedBookmark))
 
     for(const field of requiredFields) {
       if(!field) {
@@ -62,11 +70,12 @@ class EditBookmark extends React.Component {
       .then(res => {
         if(!res.ok) {
           return res.json().then(error => Promise.reject(error))
-        }
-        return res.json()
+        } 
       })
-      .then((data) => {
-        this.context.updateBookmark(data)
+      .then(() => {
+        this.context.updateBookmark(updatedBookmark)
+      })
+      .then(() => {
         this.props.history.push('/')
       })
       .catch(error => {

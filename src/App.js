@@ -36,15 +36,18 @@ class App extends Component {
     });
   };
 
-  updateBookmark = (updatedBookmarkData) => {
-    let bookmarkToUpdate = this.state.bookmarks.filter(bm => bm.id === updatedBookmarkData.id)
-    const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== updatedBookmarkData.id)
-    bookmarkToUpdate = {
-      ...bookmarkToUpdate,
-      ...updatedBookmarkData
-    }
+  // updateBookmark = (updatedBookmark) => {
+  //   const unchangedBookmarks = this.state.bookmarks.filter(bm => bm.id !== updatedBookmark.id)
+  //   this.setState({
+  //     bookmarks: [...unchangedBookmarks, updatedBookmark]
+  //   })
+  // }
+
+  updateBookmark = updatedBookmark => {
     this.setState({
-      bookmarks: [...unchangedBookmarks, bookmarkToUpdate]
+      bookmarks: this.state.bookmarks.map(bm =>
+        (bm.id !== updatedBookmark.id) ? bm : updatedBookmark
+      )
     })
   }
 
